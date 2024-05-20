@@ -1,0 +1,40 @@
+# Inicializamos el juego de Tetris
+tetris_game = TetrisGame()
+
+# Iteramos mientras el juego no haya terminado
+while not tetris_game.is_over():
+    # Obtenemos la próxima pieza de Tetris
+    piece = tetris_game.get_next_piece()
+
+    # Mostramos la pieza en la pantalla
+    tetris_game.show_piece(piece)
+
+    # Esperamos a que el usuario mueva la pieza o presione "enter"
+    tetris_game.wait_for_move()
+
+    # Movemos la pieza hacia abajo
+    tetris_game.move_down()
+
+    # Comprobamos si se ha completado una línea
+    lines_completed = tetris_game.check_completed_lines()
+
+    # Si se han completado líneas, mostramos una pregunta en la pantalla
+    if lines_completed > 0:
+        question = get_random_question()
+        tetris_game.show_question(question)
+
+        # Esperamos a que el usuario responda la pregunta
+        user_answer = tetris_game.wait_for_answer()
+
+        # Comprobamos si la respuesta es correcta
+        if is_correct_answer(question, user_answer):
+            tetris_game.add_points(POINTS_FOR_CORRECT_ANSWER)
+        else:
+            tetris_game.add_points(0)
+
+    # Actualizamos la pantalla
+    tetris_game.update_screen()
+
+# Al final del juego, mostramos la puntuación total
+final_score = tetris_game.get_score()
+print(f"Tu puntuación final es: {final_score}")
